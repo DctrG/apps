@@ -5,7 +5,7 @@ from vertexai.generative_models import GenerativeModel, GenerationConfig, HarmCa
 
 project_id = os.environ.get("PROJECT_ID")
 location = os.environ.get("REGION")
-model_id = "gemini-1.0-pro-001"
+model_id = "gemini-1.0-pro"
 
 vertexai.init(project=project_id, location=location)
 model = GenerativeModel(
