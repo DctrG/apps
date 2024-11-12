@@ -1,0 +1,6 @@
+# requirements file
+# Tested on Python 3.11.6
+
+streamlit
+vertexai
+google-cloud-aiplatform
