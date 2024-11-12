@@ -3,9 +3,9 @@
 echo "Running startup script..." > /var/log/startup-script.log
 git clone https://github.com/DctrG/apps.git
 sudo -s
-export SSL_CERT_FILE=/etc/ssl/certs/root_ca.pem
-export REQUESTS_CA_BUNDLE=/etc/ssl/certs/root_ca.pem
-export GRPC_DEFAULT_SSL_ROOTS_FILE_PATH=/etc/ssl/certs/root_ca.pem
+echo 'export SSL_CERT_FILE=/etc/ssl/certs/root_ca.pem \
+REQUESTS_CA_BUNDLE=/etc/ssl/certs/root_ca.pem \ 
+GRPC_DEFAULT_SSL_ROOTS_FILE_PATH=/etc/ssl/certs/root_ca.pem' >> /root/.bashrc
 systemctl stop bank-app.service
 source venv/bin/activate
 cd /home/paloalto/apps
