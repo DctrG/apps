@@ -48,7 +48,7 @@ class Chatbot:
             if "RST_STREAM" in str(e):
                 return f"Sorry but your request was blocked for security reasons"
             else:
-                return f"Sorry, something went wrong, try again later"
+                return f"Sorry, something went wrong, try again later", e
 
 
 # Instantiate the chatbot
