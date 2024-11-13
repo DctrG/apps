@@ -45,7 +45,7 @@ class Chatbot:
                     continue
             return " ".join(final_response)
         except Exception as e:
-            return f"Sorry, something went wrong, try again later"
+            return f"Sorry, something went wrong, try again later", e
 
 
 # Instantiate the chatbot
