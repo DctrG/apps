@@ -99,4 +99,7 @@ if submit_button and user_input:
     bot_response = chatbot.generate_response(user_input)
     st.session_state.conversation.append({"role": "bot", "content": bot_response})
     display_conversation()
+    
+st.caption("Unprotected AI Application")
+
 
