@@ -31,7 +31,7 @@ class Chatbot:
         self.model = model
     
     def scan_content(self, content):
-        api_key = "< Make sure you enter you API key here >"
+        api_key = os.getenv('AIRS_API_KEY')
         json_object = {
             "contents": [
                 {
@@ -87,7 +87,7 @@ if "waiting_for_response" not in st.session_state:
 st.markdown(
     """
     <div style="text-align: center; font-size: 20x; font-weight: bold; color: green; margin-top: 20px;">
-        Unprotected AI App
+        AI App Protected by Palo Alto Networks
     </div>
     """,
     unsafe_allow_html=True
