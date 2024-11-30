@@ -9,6 +9,8 @@ from vertexai.generative_models import GenerativeModel, GenerationConfig, HarmCa
 project_id = os.environ.get("PROJECT_ID")
 location = os.environ.get("REGION")
 model_id = "gemini-1.0-pro-002"
+airs_api_key = os.getenv('AIRS_API_KEY')
+airs_profile_name = os.getenv('AIRS_PROFILE_NAME')
 
 vertexai.init(project=project_id, location=location)
 model = GenerativeModel(
@@ -31,7 +33,6 @@ class Chatbot:
         self.model = model
     
     def scan_content(self, content):
-        api_key = os.getenv('AIRS_API_KEY')
         json_object = {
             "contents": [
                 {
@@ -39,11 +40,11 @@ class Chatbot:
                 }
             ],
             "ai_profile": {
-                "profile_name": "bank-app-sec-profile"
+                "profile_name": airs_profile_name
             }
             }
         url = "https://service.api.aisecurity.paloaltonetworks.com/v1/scan/sync/request"
-        header = {'x-pan-token': api_key}
+        header = {'x-pan-token': airs_api_key}
 
         response = requests.post(url, json = json_object, headers = header)
         json_data = json.loads(response.text)
