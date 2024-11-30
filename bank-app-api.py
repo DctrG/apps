@@ -32,7 +32,7 @@ class Chatbot:
     def __init__(self, model):
         self.model = model
     
-    def scan_content(self, content):
+    def scan_content(self, content, response):
         json_object = {
             "contents": [
                 {
@@ -43,6 +43,8 @@ class Chatbot:
                 "profile_name": airs_profile_name
             }
             }
+        if response:
+            json_object["contents"][0]["response"] = response
         url = "https://service.api.aisecurity.paloaltonetworks.com/v1/scan/sync/request"
         header = {'x-pan-token': airs_api_key}
 
@@ -119,12 +121,12 @@ with chat_container:
             full_response = ""
         
             chatbot = Chatbot(model)
-            scan_result = chatbot.scan_content(prompt)
+            scan_result = chatbot.scan_content(prompt, None)
             if scan_result.get("action") == "block":
                 full_response = chatbot.format_scan(scan_result)
             else:
                 llm_response = chatbot.generate_response(prompt)
-                scan_result = chatbot.scan_content(llm_response)
+                scan_result = chatbot.scan_content(prompt, llm_response)
                 if scan_result.get("action") == "block":
                     full_response = chatbot.format_scan(scan_result)
                 else:
