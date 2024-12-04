@@ -50,18 +50,23 @@ class Chatbot:
 
         response = requests.post(url, json = json_object, headers = header)
         json_data = json.loads(response.text)
+        if 'error' in json_data:
+            print(json_data)
         return json_data
     
-    def format_scan(self, content):
+    def format_scan(self, content, is_it_prompt):
         key_mapping = {
                         "dlp": "'Sensitive Data Leakeage'",
                         "injection": "'Prompt Injecton Attempt'",
                         "url_cats": "'Insecure Output'"
                     }
-        detected = scan_result.get("prompt_detected", {})
+        if is_it_prompt:
+            detected = scan_result.get("prompt_detected", {})
+        else:
+            detected = scan_result.get("response_detected", {})
         raw_reason = next((k for k, v in detected.items() if v), None)
         reason = key_mapping.get(raw_reason)
-        action = f"Blocked by AI Runtime Security API due to potential {(reason)}"
+        action = f"Blocked by AI Runtime Security API due to potential {raw_reason} {(reason)}"
         return action
         
     def generate_response(self, prompt_text):
@@ -122,18 +127,25 @@ with chat_container:
         
             chatbot = Chatbot(model)
             scan_result = chatbot.scan_content(prompt, None)
+            print(prompt)
+            print(scan_result)
             if scan_result.get("action") == "block":
-                full_response = chatbot.format_scan(scan_result)
+                print("/\ prompt block")
+                full_response = chatbot.format_scan(scan_result, True)
             else:
+                print("/\ prompt clear")
                 llm_response = chatbot.generate_response(prompt)
                 scan_result = chatbot.scan_content(prompt, llm_response)
+                print(scan_result)
                 if scan_result.get("action") == "block":
-                    full_response = chatbot.format_scan(scan_result)
+                    print("/\  response block")
+                    full_response = chatbot.format_scan(scan_result, False)
                 else:
+                    print("/\  response clear")
                     for char in llm_response:
                         full_response += char
                         message_placeholder.markdown(full_response + "▌")
-                        sleep(0.01)
+                        sleep(0.001)
 
             # Remove cursor and display final response
             message_placeholder.markdown(full_response)
