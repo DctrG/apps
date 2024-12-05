@@ -3,6 +3,7 @@ from time import sleep
 import requests
 import json
 import streamlit as st
+import uuid
 import vertexai
 from vertexai.generative_models import GenerativeModel, GenerationConfig, HarmCategory, HarmBlockThreshold
 
@@ -32,8 +33,9 @@ class Chatbot:
     def __init__(self, model):
         self.model = model
     
-    def scan_content(self, content, response):
+    def scan_content(self, content, response, trid):
         json_object = {
+            "tr_id": trid,
             "contents": [
                 {
                 "prompt": content
@@ -42,7 +44,7 @@ class Chatbot:
             "ai_profile": {
                 "profile_name": airs_profile_name
             }
-            }
+        }
         if response:
             json_object["contents"][0]["response"] = response
         url = "https://service.api.aisecurity.paloaltonetworks.com/v1/scan/sync/request"
@@ -126,7 +128,9 @@ with chat_container:
             full_response = ""
         
             chatbot = Chatbot(model)
-            scan_result = chatbot.scan_content(prompt, None)
+            trid = str(uuid.uuid4())
+            scan_result = chatbot.scan_content(prompt, None, trid)
+            print(trid)
             print(prompt)
             print(scan_result)
             if scan_result.get("action") == "block":
@@ -135,7 +139,7 @@ with chat_container:
             else:
                 print("/\ prompt clear")
                 llm_response = chatbot.generate_response(prompt)
-                scan_result = chatbot.scan_content(prompt, llm_response)
+                scan_result = chatbot.scan_content(prompt, llm_response, trid)
                 print(scan_result)
                 if scan_result.get("action") == "block":
                     print("/\  response block")
