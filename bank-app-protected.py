@@ -48,6 +48,8 @@ class Chatbot:
         except Exception as e:
             if "RST_STREAM" in str(e):
                 return f"Sorry but your request was blocked for security reasons"
+            elif "ConnectionResetError" in str(e):
+                return f"Sorry but your request was blocked for security reasons"
             else:
                 return f"Sorry, something went wrong, try again later #{str(e)}"
 
