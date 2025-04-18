@@ -9,7 +9,7 @@ from vertexai.generative_models import GenerativeModel, GenerationConfig, HarmCa
 
 project_id = os.environ.get("PROJECT_ID")
 location = os.environ.get("REGION")
-model_id = "gemini-1.0-pro-002"
+model_id = "gemini-2.0-flash"
 airs_api_key = os.getenv('AIRS_API_KEY')
 airs_profile_name = os.getenv('AIRS_PROFILE_NAME')
 
