@@ -26,7 +26,7 @@ vertexai.init(project=PROJECT_ID, location=LOCATION)
 def load_models() -> Tuple[GenerativeModel, GenerativeModel]:
     """Load Gemini 1.5 Flash and Pro models."""
     return GenerativeModel("model_id = "gemini-2.0-flash"), GenerativeModel(
-        "model_id = "gemini-2.0-flash"  # verify
+        "model_id = "gemini-2.0-flash"  # verify if working
     )
 
 
